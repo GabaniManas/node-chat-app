@@ -22,17 +22,19 @@ socket.on('disconnect',function(){
 // });
 
 socket.on('newMessage',function(msg){
-	console.log('New Message:',msg);
+	// console.log('New Message:',msg);
+	var formattedTime = moment(msg.createdAt).format('hh:mm A');
 	var li=jQuery('<li></li>');
-	li.text(`${msg.from} : ${msg.text}`);
+	li.text(`${msg.from} ${formattedTime} : ${msg.text}`);
 	jQuery('#messages').append(li);
 });
 
 socket.on('newLocationMessage',function(msg){
-	console.log('New Message:',msg);
+	// console.log('New Message:',msg);
+	var formattedTime = moment(msg.createdAt).format('hh:mm A');
 	var li=jQuery('<li></li>');
 	var a=jQuery('<a target="_blank">My Current Location</a>');
-	li.text(`${msg.from} :`);
+	li.text(`${msg.from} ${formattedTime}:`);
 	a.attr('href',msg.url);
 	li.append(a);
 	jQuery('#messages').append(li);
