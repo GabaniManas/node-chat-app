@@ -27,14 +27,19 @@ io.on('connection',(socket)=>{
 	// 	console.log('createEmail',email);
 	// });
 
-	socket.emit('newMessage',{
-		to: 'Julian',
-		text: 'There you go',
-		createdAt: 123123
-	});
+	// socket.emit('newMessage',{
+	// 	to: 'Julian',
+	// 	text: 'There you go',
+	// 	createdAt: 123123
+	// });
 
 	socket.on('createMessage',(msg)=>{
 		console.log('Create Message',msg);
+		io.emit('newMessage',{
+			from: msg.from,
+			text: msg.text,
+			createdAt: new Date().getTime()
+		});
 	});
 
 	socket.on('disconnect',()=>{
