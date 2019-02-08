@@ -23,5 +23,25 @@ socket.on('disconnect',function(){
 
 socket.on('newMessage',function(msg){
 	console.log('New Message:',msg);
-})
+	var li=jQuery('<li></li>');
+	li.text(`${msg.from} : ${msg.text}`);
+	jQuery('#messages').append(li);
+});
 
+// socket.emit('createMessage',{
+// 	from:'Jason',
+// 	text:'Hello'
+// },function(data){
+// 	console.log('I Gotcha.',data);
+// });
+
+jQuery('#message-form').on('submit',function(e){
+	e.preventDefault(); // to override the default behaviour of the form (passing form field data in the URL)
+
+	socket.emit('createMessage',{
+		from : 'User',
+		text : jQuery('[name=message]').val()
+	},function(){
+
+	});
+});
