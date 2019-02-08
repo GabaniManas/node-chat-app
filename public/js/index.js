@@ -1,4 +1,22 @@
 var socket = io(); // as we have loaded the socket.io.js ... it request server to establish a web socket and keep the connection open
+
+function scrollToBottom () {
+	// Selectors
+	var messages = jQuery('#messages');
+	var newMessage = messages.children('li:last-child')
+	// Heights
+	var clientHeight = messages.prop('clientHeight');
+	var scrollTop = messages.prop('scrollTop');
+	var scrollHeight = messages.prop('scrollHeight');
+	var newMessageHeight = newMessage.innerHeight();
+	var lastMessageHeight = newMessage.prev().innerHeight();
+
+	if(clientHeight + scrollTop + newMessageHeight + lastMessageHeight >= scrollHeight) {
+		// console.log('Should scroll');
+		messages.scrollTop(scrollHeight);
+	}
+}
+
 socket.on('connect',function(){
 	console.log('Connected to server');
 
@@ -31,7 +49,8 @@ socket.on('newMessage',function(msg){
 		createdAt : formattedTime
 	});
 
-	jQuery('#messages').append(html);	
+	jQuery('#messages').append(html);
+	scrollToBottom();	
 	// var formattedTime = moment(msg.createdAt).format('hh:mm A');
 	// var li=jQuery('<li></li>');
 	// li.text(`${msg.from} ${formattedTime} : ${msg.text}`);
@@ -50,6 +69,7 @@ socket.on('newLocationMessage',function(msg){
 	});
 
 	jQuery('#messages').append(html);
+	scrollToBottom();
 	// var formattedTime = moment(msg.createdAt).format('hh:mm A');
 	// var li=jQuery('<li></li>');
 	// var a=jQuery('<a target="_blank">My Current Location</a>');
