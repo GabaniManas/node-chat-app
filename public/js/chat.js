@@ -111,7 +111,7 @@ jQuery('#message-form').on('submit',function(e){
 	e.preventDefault(); // to override the default behaviour of the form (passing form field data in the URL)
 
 	socket.emit('createMessage',{
-		from : 'User',
+		// from : 'User',
 		text : messageTextbox.val()
 	},function(){
 		messageTextbox.val('');

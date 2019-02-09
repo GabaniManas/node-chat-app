@@ -74,7 +74,11 @@ io.on('connection',(socket)=>{
 	});
 
 	socket.on('createMessage',(msg,callback)=>{
-		console.log('Create Message',msg);
+		// console.log('Create Message',msg);
+		var user = U.getUser(socket.id);
+		if(user && isRealString(msg.text)){
+			io.to(user.room).emit('newMessage',generateMessage(user.name,msg.text));
+		}
 		callback();
 		// callback('This is from server.');
 		// io.emit('newMessage',{
@@ -82,7 +86,7 @@ io.on('connection',(socket)=>{
 		// 	text: msg.text,
 		// 	createdAt: new Date().getTime()
 		// });
-		io.emit('newMessage',generateMessage(msg.from,msg.text));
+		
 		// socket.broadcast.emit('newMessage',{
 		// 	from: msg.from,
 		// 	text: msg.text,
@@ -91,7 +95,11 @@ io.on('connection',(socket)=>{
 	});
 
 	socket.on('createLocationMessage',(coords)=>{
-		io.emit('newLocationMessage',generateLocationMessage('Admin',coords.latitude,coords.longitude));
+		var user = U.getUser(socket.id);
+		if(user){
+			io.to(user.room).emit('newLocationMessage',generateLocationMessage(user.name,coords.latitude,coords.longitude));
+		}
+		
 	});
 
 	socket.on('disconnect',()=>{
